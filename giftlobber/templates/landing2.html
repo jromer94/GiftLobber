@@ -40,14 +40,14 @@
 
         <b><h1 style="color: white;height: 30px;">Welcome to GiftLobber</h1></b>
         <p class="lead" style="color: white">GiftLobber is an easier way to send postage to loved ones.<br>
-        </p><form class="form-signin" role="form" style="
+        </p><form class="form-signin" action="{{url_for('login')}}" method=post role="form" style="
               display: inline-block;
               height: 133px;
               width: 250px;
               text-align: center;
             ">
-        <input type="text" class="form-control" placeholder="Username" required="" autofocus="">
-        <input type="password" class="form-control" placeholder="Password" required=""> <br>
+        <input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus="">
+        <input type="password" class="form-control" name="pass"  placeholder="Password" required=""> <br>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
       </div>
