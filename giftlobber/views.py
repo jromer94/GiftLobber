@@ -6,18 +6,32 @@ from pymongo import MongoClient
 
 client = MongoClient('mongodb://admin2:admin@linus.mongohq.com:10015/GiftLobber')
 client = client.GiftLobber
-contacts = {}
-jobs = {}
 
 @app.route('/contacts')
 def listContacts():
-    return "temp"
+    results = ''
+    return client.contacts
 
 
 @app.route('/?job')
 def listJobs():
-    return jobs
+    results = ''
+    return client.jobs
     
+@app.route('/getContactByLastName/<name>')
+def queryName(name):
+    results = ''
+    for aName in client.tasks.find({'last':name}):
+        print aName
+        results += str(aName)
+    return 'name: '+ name+ "\n"+ results
+    
+@app.route('/getGift/<date>')
+def queryTask(task):
+    results = ''
+    for subTask in client.tasks.find({'date':date}):
+        results += str(subTask)
+    return 'task: '+ task + "\n" + results
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -26,10 +40,12 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-	print request.form['username']
-   	user = client.users.find_one({'name': request.form['username']})
+        print request.form['username']
+        user = client.users.find_one({
+            'name': request.form['username']
+            })
         print user
-        if user and  user['pass'] == request.form['pass']:
+        if user and user['pass'] == request.form['pass']:
             session['logged_in'] = True
             session['user'] = user['name']
             flash('You were logged in')
@@ -42,25 +58,29 @@ def login():
 @app.route('/contacts/add', methods['GET', 'POST'])
 def addContact():
     if request.method == 'POST':
-        client.contacts.insert({"first": request.form['first'],
+        client.contacts.insert({
+            "first": request.form['first'],
             "last": request.form['last'],
             "address1": request.form['address1'],
             "address2": request.form['address2'],
             "city": request.form['city'],
             "state": request.form["state"],
             "zip": request.form["zip"],
-            "country": "US"})
-        return redirect(url_for('index')    
-
+            "country": "US"
+            })
+        return redirect(url_for('index'))
+    
     return render_template('addContact.html')
 
 @app.route('/gifts/add', methods['GET', 'POST'])
 def addGift():
     if request.method == 'POST':
-        client.gifts.insert({"title": request.form['title'],
+        client.gifts.insert({
+            "title": request.form['title'],
             "message" = request.form['message'],
-            "front" = request.form['front']})
-        return redirect(url_for('listGifts') 
+            "front" = request.form['front']
+            })
+        return redirect(url_for('listGifts') )
 
     return render_template('addGift.html')
 
