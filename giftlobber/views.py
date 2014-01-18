@@ -7,40 +7,51 @@ import helpers
 client = MongoClient('mongodb://admin2:admin@linus.mongohq.com:10015/GiftLobber')
 client = client.GiftLobber
 
-@app.route('/contacts')
-def listContacts():
-    results = ''
-    return client.contacts
+@app.route('/contacts', methods=['GET','POST'])
+def manageContacts():
+    if request.method == "POST":
+        #add address data to contacts
+        pass
+    
+    return render_template('manageContacts.html')
 
-
-@app.route('/?job')
-def listJobs():
-    results = ''
-    return client.jobs
+@app.route('/gifts',methods=['GET','POST'])
+def manageGifts():
+    if request.method == "POST":
+        #add gift data jobs
+        pass
+    return render_template('manageGifts.html')
     
 @app.route('/getContactByLastName/<name>')
 def queryName(name):
-    results = ''
-    for aName in client.tasks.find({'last':name}):
-        print aName
-        results += str(aName)
-    return 'name: '+ name+ "\n"+ results
+    results = client.tasks.find({'last':name})
+    return results
     
-@app.route('/getGift/<date>')
-def queryTask(task):
-    results = ''
-    for subTask in client.tasks.find({'date':date}):
-        results += str(subTask)
-    return 'task: '+ task + "\n" + results
+@app.route('/getGiftByDate/<date>')
+def queryDate(date):
+    result = client.tasks.find({'date':date})
+    return results
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print session.get('logged_in')
     if session.get('logged_in') == None:
         return redirect(url_for('login'))
-
-
+        
+    if request.method == 'POST':
+        button = request.form["submit"]
+        print button
+        if button == "Manage Contacts":
+            return redirect(url_for('manageContacts'))
+        elif button == "Manage Gifts":
+            return redirect(url_for('manageGifts'))
+    
+    else:
+        return render_template('management.html')
+    
     return render_template('management.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,8 +68,8 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Incorrect login info')
- 
-    return render_template('landing2.html')   
+            
+    return render_template('landing2.html')
 
 @app.route('/contacts/add', methods=['GET', 'POST'])
 def addContact():
@@ -81,7 +92,6 @@ def addContact():
             "country": "US",
             "addressId": address['id']
             })
-        return redirect(url_for('index'))
     
     return render_template('addContact.html')
 
