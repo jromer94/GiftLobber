@@ -54,4 +54,14 @@ def addContact():
 
     return render_template('addContact.html')
 
+@app.route('/gifts/add', methods['GET', 'POST'])
+def addGift():
+    if request.method == 'POST':
+        client.gifts.insert({"title": request.form['title'],
+            "message" = request.form['message'],
+            "front" = request.form['front']})
+        return redirect(url_for('listGifts') 
+
+    return render_template('addGift.html')
+
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
