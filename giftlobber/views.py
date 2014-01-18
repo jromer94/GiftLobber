@@ -2,7 +2,7 @@ from giftlobber import app
 from flask import render_template, request, flash, session, redirect, url_for
 from flask.ext.pymongo import PyMongo
 from pymongo import MongoClient
-
+import helpers
 
 client = MongoClient('mongodb://admin2:admin@linus.mongohq.com:10015/GiftLobber')
 client = client.GiftLobber
@@ -63,6 +63,13 @@ def login():
 @app.route('/contacts/add', methods=['GET', 'POST'])
 def addContact():
     if request.method == 'POST':
+        values = {'name': request.form['first'] + " " + request.form['last'],
+            'address_line1': request.form['address1'],
+            'address_line2': request.form['address2'],
+            'address_city': request.form['city'],
+            'address_zip': request.form['zip'], 
+            'address_country': "US"}
+        address = helpers.lobPost('https://test_814e892b199d65ef6dbb3e4ad24689559ca:@api.lob.com/v1/addresses/', values)
         client.contacts.insert({
             "first": request.form['first'],
             "last": request.form['last'],
@@ -71,7 +78,8 @@ def addContact():
             "city": request.form['city'],
             "state": request.form["state"],
             "zip": request.form["zip"],
-            "country": "US"
+            "country": "US",
+            "addressId": address['id']
             })
         return redirect(url_for('index'))
     
@@ -82,8 +90,8 @@ def addGift():
     if request.method == 'POST':
         client.gifts.insert({
             "title": request.form['title'],
-            "message" = request.form['message'],
-            "front" = request.form['front']
+            "message": request.form['message'],
+            "front": request.form['front']
             })
         return redirect(url_for('listGifts') )
 
