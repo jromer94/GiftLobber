@@ -11,17 +11,17 @@ jobs = {}
 
 @app.route('/contacts')
 def listContacts():
-    return "temp"
+    return contacts
 
 
 @app.route('/?job')
-def listJobs():
+def listGifts():
     return jobs
     
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    return render_template('management.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -39,7 +39,7 @@ def login():
  
     return render_template('landing2.html')   
 
-@app.route('/contacts/add', methods['GET', 'POST'])
+@app.route('/contacts/add', methods=['GET', 'POST'])
 def addContact():
     if request.method == 'POST':
         client.contacts.insert({"first": request.form['first'],
@@ -50,17 +50,17 @@ def addContact():
             "state": request.form["state"],
             "zip": request.form["zip"],
             "country": "US"})
-        return redirect(url_for('index')    
+        return redirect(url_for('index'))    
 
     return render_template('addContact.html')
 
-@app.route('/gifts/add', methods['GET', 'POST'])
+@app.route('/gifts/add', methods=['GET', 'POST'])
 def addGift():
     if request.method == 'POST':
         client.gifts.insert({"title": request.form['title'],
-            "message" = request.form['message'],
-            "front" = request.form['front']})
-        return redirect(url_for('listGifts') 
+            "message": request.form['message'],
+            "front": request.form['front']})
+        return redirect(url_for('listGifts')) 
 
     return render_template('addGift.html')
 
