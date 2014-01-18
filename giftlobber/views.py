@@ -21,6 +21,11 @@ def listGifts():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    print session.get('logged_in')
+    if session.get('logged_in') == None:
+        return redirect(url_for('login'))
+
+
     return render_template('management.html')
 
 @app.route('/login', methods=['GET', 'POST'])
