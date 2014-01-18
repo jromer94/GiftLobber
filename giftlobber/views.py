@@ -13,7 +13,8 @@ def manageContacts():
         #add address data to contacts
         pass
     
-    return render_template('manageContacts.html')
+    contacts = client.contacts.find({'user': session.get('user')})
+    return render_template('manageContact.html', contacts = contacts)
 
 @app.route('/gifts',methods=['GET','POST'])
 def manageGifts():

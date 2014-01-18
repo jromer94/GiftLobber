@@ -43,6 +43,7 @@
         <br>
         <div class="panel panel-default">
           <!-- Default panel contents -->
+          {% for contact in contacts%}
           <div class="panel-heading"> 
           Josh Romer  
           <div class="btn-group btn-grou-xs">
@@ -58,10 +59,9 @@
           <!-- List group -->
           <ul class="list-group">
             <li class="list-group-item">Gift:</li>
-            <li class="list-group-item">Birthdate:</li>
           </ul>
         </div>
-
+	{% endfor %}
         <button class="btn btn-lg btn-primary" type="submit">Add New Contact</button>
 
     
