@@ -1,0 +1,11 @@
+Flask==0.10.1
+Flask-SQLAlchemy==1.0
+Jinja2==2.7.1
+MarkupSafe==0.18
+SQLAlchemy==0.8.2
+WTForms==1.0.5
+Werkzeug==0.9.4
+itsdangerous==0.23
+wsgiref==0.1.2
+PyMongo==2.6.3
+gunicorn==18.0
