@@ -51,15 +51,17 @@
 
         <b><h1 style="color: white;height: 30px;">Manage Your Gifts</h1></b>
         <br>
-	{% for contact in contacts%}
+        
+  {% for contact in contacts%}
         <div class="panel panel-default">
           <!-- Default panel contents -->
-          {% for contact in contacts%}
-          <div class="panel-heading" style="text-align: left;">
-          Josh Romer  
+          <div class="panel-heading" style="text-align: left;"> 
+          {{contact['first'] + " " + contact['last']}}
           <div class="btn-group btn-grou-xs">
             <button type="button" class="btn btn-xs">
-              <span class="glyphicon glyphicon-plus"></span>
+              <a href="">
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
             </button>
             <button type="button" class="btn btn-xs">
               <span class="glyphicon glyphicon-remove"></span>
