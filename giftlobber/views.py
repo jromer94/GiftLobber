@@ -54,9 +54,11 @@ def managePayment():
         values = {
             'routing_number': request.form['routing_number'],
             'account_number': request.form['account_number'],
+            'bank_code':request.form['routing_number'],
             'bank_address[name]': request.form['bank_name'],
-            'bank_address[address_line1]': request.form['bank_address'],
+            'bank_address[address_line1]': request.form['bank_address1'],
             'bank_address[address_city]': request.form['bank_city'],
+            'bank_address[address_state]': request.form['bank_state'], 
             'bank_address[address_zip]': request.form['bank_zip'], 
             'bank_address[address_country]': "US",
             'account_address[name]': request.form['first']+request.form['last'],
@@ -67,11 +69,14 @@ def managePayment():
             'account_address[address_zip]': request.form['zip'],
             'account_address[address_country]': "US"
         }
+        print values
         account = helpers.lobPost('https://api.lob.com/v1/bank_accounts', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
-        client.accounts.insert({
+        print account
+        client.account.insert({
             "user": session.get('user'),
             account["id"]:"account_id"
             })
+        redirect(url_for('index'))
     return render_template('addAccount.html')
         
 @app.route('/addCheck/', methods=['GET','POST'])
