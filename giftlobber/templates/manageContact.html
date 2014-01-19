@@ -41,11 +41,12 @@
 
         <b><h1 style="color: white;height: 30px;">Manage Your Contacts</h1></b>
         <br>
+	{% for contact in contacts%}
         <div class="panel panel-default">
           <!-- Default panel contents -->
-          {% for contact in contacts%}
+          
           <div class="panel-heading"> 
-          Josh Romer  
+		{{contact['first'] + " " + contact['last']}}            
           <div class="btn-group btn-grou-xs" style="
           padding-left: 280px;">
             <button type="button" class="btn btn-xs">
@@ -63,7 +64,7 @@
           </ul>
         </div>
 	{% endfor %}
-	<form action="{{url_for('addContact')}}" method=get role="form">
+	<form action="{{url_for('addContact')}}" method=get>
         <button class="btn btn-lg btn-primary" type="submit">Add New Contact</button>
 	</form>
     
