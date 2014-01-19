@@ -21,7 +21,6 @@ def run():
     for contact in client.contacts:
         for gift in contact.gifts:
             if datetime.date(gift[date]) == datetime.today()-5:
-                
                 values = {
                     "name":gift['name'],
                     "to":contact['addressID'],
@@ -56,6 +55,32 @@ def addCheck(amount, first, last):
                     }
         check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
         return check
+
+
+@app.route('/sendGift')
+def sendGift():
+    contacts = client.contacts
+    for contact in contacts.find():
+        for gift in contact['gifts']:
+            values = {
+                "name":gift['name'],
+                "to":contact['addressID'],
+                "from":client.account["account_address"],
+                "front":"/static/dist/pdfs/"+gift['front'],
+                "back":gift['message']
+            }
+            print "values one"
+            postcard = helpers.lobPost('https://api.lob.com/v1/postcards', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+            values = {
+                "name":gift['name'],
+                "to":contact['addressID'],
+                "from":client.account["account_address"],
+                "object1":postcard
+                #"object2":gift['check']
+            }
+            print "values two"
+            call = helpers.lobPost('https://api.lob.com/v1/jobs', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+            print "called"
 
 @app.route('/contacts', methods=['GET','POST'])
 def manageContacts():
