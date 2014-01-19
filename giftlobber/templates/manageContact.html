@@ -72,7 +72,7 @@
           <!-- List group -->
           <ul class="list-group" style="text-align: left;">
 	{% for gift in contact['gifts']%}
-            <li class="list-group-item">{{gift['name']}}</li>
+            <li class="list-group-item">{{gift['name'] + " Date: " +  gift['date']}}</li>
 	{% endfor %}
           </ul>
         </div>

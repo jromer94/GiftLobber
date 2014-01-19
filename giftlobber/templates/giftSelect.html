@@ -44,12 +44,12 @@
         <!-- Large button group -->
 	<form method='post' action={{url_for('selectGift', first = first, last = last)}}>
         <div class="btn-group">
-          <button class="btn btn-default btn-lg dropdown-toggle" name="name" type="button" data-toggle="dropdown">
-            Select Gift <span class="caret"></span>
+          <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+             Select Gift <span class="caret"></span>
           </button>
             <ul class="dropdown-menu" role="menu">
 		{% for gift in gifts %}
-              <li><a href="">{{gift['title']}}</a></li>
+              <li><a>{{gift['title']}}</a></li>
 		{%endfor%}
             </ul>
         </div>
@@ -57,7 +57,8 @@
         
           <fieldset>
             <h3 style="color: rgba(255, 255, 255, 1);">Enter Date</h3>
-            <input type="text" name="date" placeholder="mmdd">
+            <input type="text" name="date" placeholder="mm/dd">
+            <input type="text" name = "name" class="hidden" id="test" value="one">
           </fieldset>
         <button class="btn btn-lg btn-primary btn-inline" type="submit">Submit</button>
 
