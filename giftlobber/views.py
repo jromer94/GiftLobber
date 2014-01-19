@@ -1,11 +1,36 @@
 from giftlobber import app
+
 from flask import render_template, request, flash, session, redirect, url_for
 from flask.ext.pymongo import PyMongo
 from pymongo import MongoClient
+
+from datetime import datetime
+from threading import Timer
+
 import helpers
 
 client = MongoClient('mongodb://admin2:admin@linus.mongohq.com:10015/GiftLobber')
 client = client.GiftLobber
+
+x=datetime.today()
+y=(x+timedelta(days=1).replace(hour = 2, minute = 0, microsecond = 0)
+delta_t = y-x
+secs = delta_t.seconds+1
+
+def run():
+    #for user in users:
+        #for job in client.jobs:
+            #if date <= datetime.today() - 7
+                #send api to Lob
+    pass
+        
+
+t=Timer(secs,run)
+t.start()
+
+    
+    
+
 
 @app.route('/contacts', methods=['GET','POST'])
 def manageContacts():
