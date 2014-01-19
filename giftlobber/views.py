@@ -23,17 +23,6 @@ def manageGifts():
         pass
     gifts = client.gifts.find({'user': session.get('user')})
     return render_template('manageGift.html', gifts = gifts)
-    
-@app.route('/getContactByLastName/<name>')
-def queryName(name):
-    results = client.tasks.find({'last':name})
-    return results
-    
-@app.route('/getGiftByDate/<date>')
-def queryDate(date):
-    result = client.tasks.find({'date':date})
-    return results
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
