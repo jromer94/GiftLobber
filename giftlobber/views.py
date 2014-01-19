@@ -13,7 +13,7 @@ client = MongoClient('mongodb://admin2:admin@linus.mongohq.com:10015/GiftLobber'
 client = client.GiftLobber
 
 x=datetime.today()
-y=(x+timedelta(days=1).replace(hour = 2, minute = 0, microsecond = 0)
+y=x.replace(day = x.day+1,hour = 2, minute = 0, microsecond = 0)
 delta_t = y-x
 secs = delta_t.seconds+1
 
@@ -59,12 +59,12 @@ def managePayment():
             'bank_address[address_city]': request.form['bank_city'],
             'bank_address[address_zip]': request.form['bank_zip'], 
             'bank_address[address_country]': "US",
-            'account_address[name]': request.form['name'],
-            'account_address[address_line1]': request.form['address_line1'],
-            'account_address[address_line2]': request.form['address_line2'],
-            'account_address[address_city]': request.form['address_city'],
-            'account_address[address_state]': request.form['address_state'],
-            'account_address[address_zip]': request.form['address_zip'],
+            'account_address[name]': request.form['first']+request.form['last'],
+            'account_address[address_line1]': request.form['address1'],
+            'account_address[address_line2]': request.form['address2'],
+            'account_address[address_city]': request.form['city'],
+            'account_address[address_state]': request.form['state'],
+            'account_address[address_zip]': request.form['zip'],
             'account_address[address_country]': "US"
         }
         account = helpers.lobPost('https://api.lob.com/v1/bank_accounts', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
@@ -72,11 +72,7 @@ def managePayment():
             "user": session.get('user'),
             account["id"]:"account_id"
             })
-        return render_template('management.html')
-    if client.accounts == None:
-        return render_template('addAccount.html')
-    else:
-        return redirect(url_for('index'))
+    return render_template('addAccount.html')
         
 @app.route('/addCheck/', methods=['GET','POST'])
 def addCheck():
@@ -95,6 +91,7 @@ def addCheck():
                     }
         check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
         
+        print(check)
         #store the check and then return to management index
         #client.jobs.insert({
         #    "user": session.get('user'),
