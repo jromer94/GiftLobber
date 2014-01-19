@@ -46,11 +46,11 @@ t.start()
     
 def addCheck(amount, first, last):
     if request.method == 'POST':
-        for contact in client.contacts:
+        for contact in client.contacts.find():
             if contact['first']==first and contact['last'] == last:
                 giftee = contact
                 values = {
-                    'bank_account':client.account[account["id"]],
+                    'bank_account':client.account.find_one({'user': session.get('user')})['account_id'],
                     'to':giftee['addressId'],
                     'amount':amount
                     }
@@ -99,7 +99,7 @@ def managePayment():
         print account
         client.account.insert({
             "user": session.get('user'),
-            account["id"]:"account_id"
+            "account_id":account["id"]
             })
         client.account.insert({
             "account_address":account["account_address"]
@@ -199,7 +199,7 @@ def selectGift():
         gifts.append({
             "name": request.form["name"],
             "date": request.form['date'],
-            "check": addCheck(request.form['check'], first, last)
+            "check": request.form['check']})
         })
 	client.contacts.update({
         'first':request.args.get("first", ""),
