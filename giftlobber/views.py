@@ -143,7 +143,7 @@ def addContact():
             "zip": request.form["zip"],
             "country": "US",
             "addressId": address['id'],
-            "gifts": {}
+            "gifts": [] 
             })
         return redirect(url_for('manageContacts'))
     
@@ -166,12 +166,15 @@ def addGift():
 @app.route('/contacts/select', methods=['GET' , 'POST'])
 def selectGift():
     if request.method == 'POST':
-        #gifts = client.contacts.find_one("first": "", "last": "")['gifts']
-        gifts.insert({
-            "name": request.form["name"],
-            "date": request.form["date"]
-            })
-        redirect(url_for('manageContacts'))
+        gifts = client.contacts.find_one({'first':request.args.get("first", "")
+ , 'last': request.args.get("last", "") })['gifts']
+	print "test"
+        gifts.append({"name": request.form["name"],
+            "date": request.form['date']})      
+	client.contacts.update({'first':request.args.get("first", "")
+ , 'last': request.args.get("last", "")}, {'$set': {'gifts': gifts  }})
+	print "test"
+        return redirect(url_for('manageContacts'))
 
     first = request.args.get("first", "")
     last = request.args.get("last", "")

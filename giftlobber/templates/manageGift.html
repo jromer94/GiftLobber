@@ -52,26 +52,18 @@
         <b><h1 style="color: white;height: 30px;">Manage Your Gifts</h1></b>
         <br>
         
-  {% for contact in contacts%}
+  {% for gift in gifts%}
         <div class="panel panel-default">
           <!-- Default panel contents -->
           <div class="panel-heading" style="text-align: left;"> 
-          {{contact['first'] + " " + contact['last']}}
+          {{gift['title']}}
           <div class="btn-group btn-grou-xs">
-            <button type="button" class="btn btn-xs">
-              <a href="">
-                <span class="glyphicon glyphicon-plus"></span>
-              </a>
-            </button>
-            <button type="button" class="btn btn-xs">
-              <span class="glyphicon glyphicon-remove"></span>
-            </button>
           </div> 
           </div>
 
           <!-- List group -->
           <ul class="list-group" style="text-align: left;">
-            <li class="list-group-item">Gift:</li>
+            <li class="list-group-item">{{gift['message']}}</li>
           </ul>
         </div>
 	{% endfor %}
