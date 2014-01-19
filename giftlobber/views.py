@@ -29,8 +29,22 @@ t=Timer(secs,run)
 t.start()
 
     
-    
-
+def addCheck(amount, first, last):
+    if request.method == 'POST':
+        for contact in client.contacts:
+            if contact['first']==first and contact['last'] == last:
+                giftee = contact
+                account = ''
+                for owner in client.accounts:
+                    if owner['user']==session.get('user'):
+                        account = owner[account['id']]
+                values = {
+                    'bank_account':account,
+                    'to':giftee[addressId],
+                    'amount':amount
+                    }
+        check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+        return check
 
 @app.route('/contacts', methods=['GET','POST'])
 def manageContacts():
@@ -78,33 +92,6 @@ def managePayment():
             })
         redirect(url_for('index'))
     return render_template('addAccount.html')
-        
-@app.route('/addCheck/', methods=['GET','POST'])
-def addCheck():
-    if request.method == 'POST':
-        for contact in client.contacts:
-            if request.form['toName'] in client.contacts:
-                giftee = client.contacts
-                account = ''
-                for owner in client.accounts:
-                    if owner['user']==session.get('user'):
-                        account = owner[account['id']]
-                values = {
-                    'bank_account':account,
-                    'to':giftee[addressId],
-                    'amount':request.form['amount']
-                    }
-        check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
-        
-        print(check)
-        #store the check and then return to management index
-        #client.jobs.insert({
-        #    "user": session.get('user'),
-        #    account["id"]:"account_id"
-        #    })
-        return render_template('management.html')
-    
-    return render_template('addCheck.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -174,7 +161,6 @@ def addContact():
             })
         return redirect(url_for('manageContacts'))
     
-
     return render_template('editContact.html')
 
 @app.route('/gifts/add', methods=['GET', 'POST'])
@@ -184,9 +170,11 @@ def addGift():
            "title": request.form['title'],
            "message": request.form['message'],
            "front": request.form['option1'],
-           "user": session.get('user')
+           "user": session.get('user'),
+           "check": addCheck(request.form['check'] first, last)
         })
-        return redirect(url_for('manageGifts') )
+        print client.gifts["check"]
+        return redirect(url_for('manageGifts'))
 
     return render_template('editGift.html')
 
