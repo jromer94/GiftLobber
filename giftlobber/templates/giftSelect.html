@@ -39,33 +39,29 @@
     padding-top: 0px;
     padding-bottom: 90px;">
 
-        <b><h1 style="color: white;height: 30px;">Manage Your Gifts</h1></b>
+        <b><h1 style="color: white;height: 30px;">Select/Create Your Gift</h1></b>
         <br>
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          {% for contact in contacts%}
-          <div class="panel-heading" style="text-align: left;">
-          
-          Josh Romer  
-          <div class="btn-group btn-grou-xs">
-            <button type="button" class="btn btn-xs">
-              <span class="glyphicon glyphicon-plus"></span>
-            </button>
-            <button type="button" class="btn btn-xs">
-              <span class="glyphicon glyphicon-remove"></span>
-            </button>
-          </div> 
-          </div>
-
-          <!-- List group -->
-          <ul class="list-group" style="text-align: left;">
-            <li class="list-group-item">Gift:</li>
-          </ul>
+        <!-- Large button group -->
+        <div class="btn-group">
+          <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+            Select Gift <span class="caret"></span>
+          </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="">1</a></li>
+              <li><a href="">2</a></li>
+              <li><a href="">3</a></li>
+            </ul>
         </div>
-	{% endfor %}
-	<form action="{{url_for('addContact')}}" method=get role="form">
-        <button class="btn btn-lg btn-primary" type="submit">Add New Gift</button>
-	</form>
+        <br>
+        <form>
+          <fieldset>
+            <h3 style="color: rgba(255, 255, 255, 1);">Enter Date</h3>
+            <input type="text" placeholder="mm/dd">
+          </fieldset>
+        </form>
+        <br>
+        <button class="btn btn-lg btn-primary btn-inline" type="submit">Submit</button>
+
     
 
     <!-- Bootstrap core JavaScript
