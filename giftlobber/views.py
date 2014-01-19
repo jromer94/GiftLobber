@@ -64,23 +64,13 @@ def sendGift():
         for gift in contact['gifts']:
             values = {
                 "name":gift['name'],
-                "to":contact['addressID'],
-                "from":client.account["account_address"],
-                "front":"/static/dist/pdfs/"+gift['front'],
-                "back":gift['message']
+                "to": contact['addressId'],
+                "from":client.account.find_one({'user': session.get('user')})["account_address"],
+               # "front":"https://github.com/jromer94/GiftLobber/blob/master/giftlobber/static/dist/pdfs/A.pdf?raw=true",
+                "back": client.gifts.find_one({"title": gift['name']})['message']
             }
-            print "values one"
             postcard = helpers.lobPost('https://api.lob.com/v1/postcards', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
-            values = {
-                "name":gift['name'],
-                "to":contact['addressID'],
-                "from":client.account["account_address"],
-                "object1":postcard
-                #"object2":gift['check']
-            }
-            print "values two"
-            call = helpers.lobPost('https://api.lob.com/v1/jobs', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
-            print "called"
+            addCheck(gift['check'], contact['first'], contact['last'])
 
 @app.route('/contacts', methods=['GET','POST'])
 def manageContacts():
@@ -124,11 +114,10 @@ def managePayment():
         print account
         client.account.insert({
             "user": session.get('user'),
-            "account_id":account["id"]
-            })
-        client.account.insert({
+            "account_id":account["id"],
             "account_address":account["account_address"]
             })
+            
         redirect(url_for('index'))
     return render_template('addAccount.html')
 
@@ -225,7 +214,7 @@ def selectGift():
             "name": request.form["name"],
             "date": request.form['date'],
             "check": request.form['check']})
-        })
+        
 	client.contacts.update({
         'first':request.args.get("first", ""),
         'last': request.args.get("last", "") },
