@@ -21,7 +21,8 @@ def manageGifts():
     if request.method == "POST":
         #add gift data jobs
         pass
-    return render_template('manageGifts.html')
+    gifts = client.gifts.find({'user': session.get('user')})
+    return render_template('manageGift.html', gifts = gifts)
     
 @app.route('/getContactByLastName/<name>')
 def queryName(name):
@@ -75,14 +76,18 @@ def login():
 @app.route('/contacts/add', methods=['GET', 'POST'])
 def addContact():
     if request.method == 'POST':
+	print "test1i"
         values = {'name': request.form['first'] + " " + request.form['last'],
             'address_line1': request.form['address1'],
             'address_line2': request.form['address2'],
             'address_city': request.form['city'],
+            'address_state': request.form['state'],
             'address_zip': request.form['zip'], 
             'address_country': "US"}
-        address = helpers.lobPost('https://test_814e892b199d65ef6dbb3e4ad24689559ca:@api.lob.com/v1/addresses/', values)
+	print "test2"
+        address = helpers.lobPost('https://api.lob.com/v1/addresses', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
         client.contacts.insert({
+            "user": session.get('user'),
             "first": request.form['first'],
             "last": request.form['last'],
             "address1": request.form['address1'],
@@ -93,8 +98,10 @@ def addContact():
             "country": "US",
             "addressId": address['id']
             })
+        return redirect(url_for('manageContacts'))
     
-    return render_template('manageContact.html')
+
+    return render_template('editContact.html')
 
 @app.route('/gifts/add', methods=['GET', 'POST'])
 def addGift():

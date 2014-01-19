@@ -41,13 +41,22 @@
 
         <b><h1 style="color: white;height: 30px;">Manage Your Contacts</h1></b>
         <br>
+	{% for contact in contacts%}
         <div class="panel panel-default">
           <!-- Default panel contents -->
+<<<<<<< HEAD
           {% for contact in contacts%}
           <div class="panel-heading" style="text-align: left;"> 
 
           Josh Romer  
           <div class="btn-group btn-grou-xs">
+=======
+          
+          <div class="panel-heading"> 
+		{{contact['first'] + " " + contact['last']}}            
+          <div class="btn-group btn-grou-xs" style="
+          padding-left: 280px;">
+>>>>>>> 90e1c4a1cc480d525ca011a95e61e7101f160e1b
             <button type="button" class="btn btn-xs">
               <span class="glyphicon glyphicon-plus"></span>
             </button>
@@ -63,7 +72,7 @@
           </ul>
         </div>
 	{% endfor %}
-	<form action="{{url_for('addContact')}}" method=get role="form">
+	<form action="{{url_for('addContact')}}" method=get>
         <button class="btn btn-lg btn-primary" type="submit">Add New Contact</button>
 	</form>
     
