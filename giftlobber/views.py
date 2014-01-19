@@ -12,7 +12,6 @@ def manageContacts():
     if request.method == "POST":
         #add address data to contacts
         pass
-    
     contacts = client.contacts.find({'user': session.get('user')})
     return render_template('manageContact.html', contacts = contacts)
 
@@ -23,6 +22,62 @@ def manageGifts():
         pass
     gifts = client.gifts.find({'user': session.get('user')})
     return render_template('manageGift.html', gifts = gifts)
+
+@app.route('/payment',methods=['GET','POST'])
+def managePayment():
+    if request.method == 'POST':
+        values = {
+            'routing_number': request.form['routing_number'],
+            'account_number': request.form['account_number'],
+            'bank_address[name]': request.form['bank_name'],
+            'bank_address[address_line1]': request.form['bank_address'],
+            'bank_address[address_city]': request.form['bank_city'],
+            'bank_address[address_zip]': request.form['bank_zip'], 
+            'bank_address[address_country]': "US",
+            'account_address[name]': request.form['name'],
+            'account_address[address_line1]': request.form['address_line1'],
+            'account_address[address_line2]': request.form['address_line2'],
+            'account_address[address_city]': request.form['address_city'],
+            'account_address[address_state]': request.form['address_state'],
+            'account_address[address_zip]': request.form['address_zip'],
+            'account_address[address_country]': "US"
+        }
+        account = helpers.lobPost('https://api.lob.com/v1/bank_accounts', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+        client.accounts.insert({
+            "user": session.get('user'),
+            account["id"]:"account_id"
+            })
+        return render_template('management.html')
+    if client.accounts == None:
+        return render_template('addAccount.html')
+    else:
+        return redirect(url_for('index'))
+        
+@app.route('/addCheck/', methods=['GET','POST'])
+def addCheck():
+    if request.method == 'POST':
+        for contact in client.contacts:
+            if request.form['toName'] in client.contacts:
+                giftee = client.contacts
+                account = ''
+                for owner in client.accounts:
+                    if owner['user']==session.get('user'):
+                        account = owner[account['id']]
+                values = {
+                    'bank_account':account,
+                    'to':giftee[addressId],
+                    'amount':request.form['amount']
+                    }
+        check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+        
+        #store the check and then return to management index
+        #client.jobs.insert({
+        #    "user": session.get('user'),
+        #    account["id"]:"account_id"
+        #    })
+        return render_template('management.html')
+    
+    return render_template('addCheck.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -37,6 +92,8 @@ def index():
             return redirect(url_for('manageContacts'))
         elif button == "Manage Gifts":
             return redirect(url_for('manageGifts'))
+        elif button == "Manage Payment":
+            return redirect(url_for('managePayment'))
     
     else:
         return render_template('management.html')
@@ -109,7 +166,7 @@ def addGift():
 @app.route('/contacts/select', methods=['GET' , 'POST'])
 def selectGift():
     if request.method == 'POST':
-        gifts = client.contacts.find_one("first": "", "last": "")['gifts']
+        #gifts = client.contacts.find_one("first": "", "last": "")['gifts']
         gifts.insert({
             "name": request.form["name"],
             "date": request.form["date"]
