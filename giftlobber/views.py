@@ -26,7 +26,7 @@ def run():
                     "name":gift['name'],
                     "to":contact['addressID'],
                     "from":client.account["account_address"],
-                    #"front":"/static/dist/pdfs/"+pdfName,
+                    "front":"/static/dist/pdfs/"+gift['front'],
                     "back":gift['message']
                 }
                 postcard = helpers.lobPost('https://api.lob.com/v1/postcards', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
