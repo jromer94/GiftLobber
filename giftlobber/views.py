@@ -73,6 +73,64 @@ def login():
             
     return render_template('landing2.html')
 
+@app.route('/addAccount/', methods=['GET','POST'])
+def addAccount():
+    if request.method == 'POST':
+        values = {
+            'routing_number': request.form['routing_number'],
+            'account_number': request.form['account_number'],
+            'bank_address[name]': request.form['bank_name'],
+            'bank_address[address_line1]': request.form['bank_address'],
+            'bank_address[address_city]': request.form['bank_city'],
+            'bank_address[address_zip]': request.form['bank_zip'], 
+            'bank_address[address_country]': "US",
+            'account_address[name]': request.form['name'],
+            'account_address[address_line1]': request.form['address_line1'],
+            'account_address[address_line2]': request.form['address_line2'],
+            'account_address[address_city]': request.form['address_city'],
+            'account_address[address_state]': request.form['address_state'],
+            'account_address[address_zip]': request.form['address_zip'],
+            'account_address[address_country]': "US"
+        }
+        account = helpers.lobPost('https://api.lob.com/v1/bank_accounts', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+        client.accounts.insert({
+            "user": session.get('user'),
+            account["id"]:"account_id"
+            })
+        return render_template('management.html')
+    if client.accounts == null:
+        return render_template('addAccount.html')
+    else:
+        
+        return render_template('management.html')
+        
+@app.route('/addCheck/', methods=['GET','POST'])
+def addCheck():
+    if request.method == 'POST':
+        for contact in client.contacts:
+            if request.form['toName'] in client.contacts:
+                giftee = client.contacts
+                account = ''
+                for owner in client.accounts:
+                    if owner['user']==session.get('user'):
+                        account = owner[account['id']]
+                values = {
+                    'bank_account':account,
+                    'to':giftee[addressId],
+                    'amount':request.form['amount']
+                    }
+        check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+        
+        #store the check and then return to management index
+        #client.jobs.insert({
+        #    "user": session.get('user'),
+        #    account["id"]:"account_id"
+        #    })
+        return render_template('management.html')
+    
+    return render_template('addCheck.html')
+
+
 @app.route('/contacts/add', methods=['GET', 'POST'])
 def addContact():
     if request.method == 'POST':
@@ -97,22 +155,35 @@ def addContact():
             "zip": request.form["zip"],
             "country": "US",
             "addressId": address['id']
+            "gifts": {}
             })
         return redirect(url_for('manageContacts'))
-    
 
     return render_template('editContact.html')
 
 @app.route('/gifts/add', methods=['GET', 'POST'])
 def addGift():
     if request.method == 'POST':
+        print "testtt"
         client.gifts.insert({
-            "title": request.form['title'],
-            "message": request.form['message'],
-            "front": request.form['front']
+           "title": request.form['title'],
+           "message": request.form['message'],
+          #"front": request.form['option1'],
+            "user": session.get('user')
             })
-        return redirect(url_for('listGifts') )
+        print "test222"
+        return redirect(url_for('manageGifts') )
 
-    return render_template('addGift.html')
+    return render_template('editGift.html')
+
+@app.route('/gifts/add', methods=['GET' , 'POST'])
+def selectGift():
+    if request.method == 'POST':
+        gifts = client.contacts.find_one("first": "", "last": "")['gifts']
+        gifts.insert({"name": request.form["name"],
+            "date": request.form["date"]})      
+        redirect(url_for('manageContacts'))
+
+    return render_template('giftSelect.html')
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
