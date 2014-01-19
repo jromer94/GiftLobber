@@ -18,11 +18,26 @@ delta_t = y-x
 secs = delta_t.seconds+1
 
 def run():
-    #for user in users:
-        #for job in client.jobs:
-            #if date <= datetime.today() - 7
-                #send api to Lob
-    pass
+    for contact in client.contacts:
+        for gift in contact.gifts:
+            if datetime.date(gift[date]) == datetime.today()-5:
+                
+                values = {
+                    "name":gift['name'],
+                    "to":contact['addressID'],
+                    "from":client.account["account_address"],
+                    #"front":"/static/dist/pdfs/"+pdfName,
+                    "back":gift['message']
+                }
+                postcard = helpers.lobPost('https://api.lob.com/v1/postcards', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
+                values = {
+                    "name":gift['name'],
+                    "to":contact['addressID'],
+                    "from":client.account["account_address"],
+                    "object1":postcard,
+                    "object2":gift['check']
+                }
+                call = helpers.lobPost('https://api.lob.com/v1/jobs', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
         
 
 t=Timer(secs,run)
@@ -34,13 +49,9 @@ def addCheck(amount, first, last):
         for contact in client.contacts:
             if contact['first']==first and contact['last'] == last:
                 giftee = contact
-                account = ''
-                for owner in client.accounts:
-                    if owner['user']==session.get('user'):
-                        account = owner[account['id']]
                 values = {
-                    'bank_account':account,
-                    'to':giftee[addressId],
+                    'bank_account':client.account[account["id"]],
+                    'to':giftee['addressId'],
                     'amount':amount
                     }
         check=helpers.lobPost('https://api.lob.com/v1/checks', values, 'test_814e892b199d65ef6dbb3e4ad24689559ca')
@@ -89,6 +100,9 @@ def managePayment():
         client.account.insert({
             "user": session.get('user'),
             account["id"]:"account_id"
+            })
+        client.account.insert({
+            "account_address":account["account_address"]
             })
         redirect(url_for('index'))
     return render_template('addAccount.html')
@@ -170,10 +184,8 @@ def addGift():
            "title": request.form['title'],
            "message": request.form['message'],
            "front": request.form['option1'],
-           "user": session.get('user'),
-           "check": addCheck(request.form['check'] first, last)
+           "user": session.get('user')
         })
-        print client.gifts["check"]
         return redirect(url_for('manageGifts'))
 
     return render_template('editGift.html')
@@ -184,10 +196,16 @@ def selectGift():
         gifts = client.contacts.find_one({'first':request.args.get("first", "")
  , 'last': request.args.get("last", "") })['gifts']
 	print "test"
-        gifts.append({"name": request.form["name"],
-            "date": request.form['date']})      
-	client.contacts.update({'first':request.args.get("first", "")
- , 'last': request.args.get("last", "")}, {'$set': {'gifts': gifts  }})
+        gifts.append({
+            "name": request.form["name"],
+            "date": request.form['date'],
+            "check": addCheck(request.form['check'], first, last)
+        })
+	client.contacts.update({
+        'first':request.args.get("first", ""),
+        'last': request.args.get("last", "") },
+        {'$set': {'gifts': gifts  }
+        })
 	print "test"
         return redirect(url_for('manageContacts'))
 
