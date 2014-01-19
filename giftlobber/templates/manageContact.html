@@ -49,9 +49,9 @@
 		{{contact['first'] + " " + contact['last']}}            
           <div class="btn-group btn-grou-xs" style="
           padding-left: 280px;">
-            <button type="button" class="btn btn-xs">
+            <a name="first" href={{url_for('selectGift')}} class="btn btn-xs">
               <span class="glyphicon glyphicon-plus"></span>
-            </button>
+            </a>
             <button type="button" class="btn btn-xs">
               <span class="glyphicon glyphicon-remove"></span>
             </button>
@@ -64,7 +64,7 @@
           </ul>
         </div>
 	{% endfor %}
-	<form action="{{url_for('addContact')}}" method=get>
+	<form action="{{url_for('addContact')}}" method='get'>
         <button class="btn btn-lg btn-primary" type="submit">Add New Contact</button>
 	</form>
     
