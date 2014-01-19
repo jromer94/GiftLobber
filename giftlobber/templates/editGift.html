@@ -41,17 +41,19 @@
 
         <b><h1 style="color: white;height: 30px;">Edit Your Gift</h1></b>
         </p>
-        <form class="form-inline" style="padding-bottom: 2px;">
-          <input type="text" class="input-small" placeholder="Card Name" required="" style="text-align: center;">
-        </form>
-        <textarea rows="3" class="form" placeholder="Back Message" style=" width: 200px; text-align: center;"></textarea>
+        <form class="form-inline" style="padding-bottom:4px;" method="post">
+          <input type="text" name="title"class="input-small" placeholder="Card Name" required="" style="text-align: center;">
+
+<br>
+<br>
+               <textarea rows="3" name="message"class="form" placeholder="Back Message" style=" width: 200px; text-align: center;"></textarea>
         <br><br>
-        <div style="text-align: center;">
+        <div style="text-align: center;"id="radios1" class="btn-group view-opt-btn-group" data-toggle="buttons-radio" >
           <div class="col-md-4">
               <a class="thumbnail" href="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1063042_10151952573520975_14186850_n.jpg?oh=de899e6a0dbebb1045feebc37e906509&oe=52DD4D03">
                   <img class="img-responsive" src="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1063042_10151952573520975_14186850_n.jpg?oh=de899e6a0dbebb1045feebc37e906509&oe=52DD4D03">
                   <label class="radio-inline">
-                    <input name="radioGroup" id="radio1" value="option1" type="radio">
+                    <input  id="radio1" class="btn active" name='option1' value="A" type="radio">
                   </label>
               </a>
           </div>
@@ -59,7 +61,7 @@
               <a class="thumbnail" href="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1552918_10151952573605975_635116936_n.jpg?oh=3943ee82ba53b5ef4d8247095d56dfdb&oe=52DD4FB4">
                   <img class="img-responsive" src="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1552918_10151952573605975_635116936_n.jpg?oh=3943ee82ba53b5ef4d8247095d56dfdb&oe=52DD4FB4">
                   <label class="radio-inline">
-                    <input name="radioGroup" id="radio1" value="option1" type="radio">
+                    <input id="radio1" class="btn" name="option1" value="B" type="radio">
                   </label>
               </a>
           </div>
@@ -67,7 +69,7 @@
               <a class="thumbnail" href="https://scontent-b.xx.fbcdn.net/hphotos-prn2/v/t34/1615238_10151952573695975_1969840601_n.jpg?oh=9266a084371c9996be04b21d47810606&oe=52DD235C">
                   <img class="img-responsive" src="https://scontent-b.xx.fbcdn.net/hphotos-prn2/v/t34/1615238_10151952573695975_1969840601_n.jpg?oh=9266a084371c9996be04b21d47810606&oe=52DD235C">
                   <label class="radio-inline">
-                    <input name="radioGroup" id="radio1" value="option1" type="radio">
+                    <input  id="radio1" class="btn" name="option1" value="C" type="radio">
                   </label>
               </a>
           </div>
@@ -75,7 +77,7 @@
               <a class="thumbnail" href="https://scontent-b.xx.fbcdn.net/hphotos-prn2/v/t34/1558697_10151952573730975_983376888_n.jpg?oh=21f4be63fb3fbe04579b0c772296d2bc&oe=52DD3793">
                   <img class="img-responsive" src="https://scontent-b.xx.fbcdn.net/hphotos-prn2/v/t34/1558697_10151952573730975_983376888_n.jpg?oh=21f4be63fb3fbe04579b0c772296d2bc&oe=52DD3793">
                   <label class="radio-inline">
-                    <input name="radioGroup" id="radio1" value="option1" type="radio">
+                    <input  id="radio1"class="btn" name="option1" value="D" type="radio">
                   </label>
               </a>
           </div>
@@ -83,7 +85,7 @@
               <a class="thumbnail" href="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1600218_10151952573755975_1943489134_n.jpg?oh=3b63992f4758b9e5f513dd43ffba490e&oe=52DDB336">
                   <img class="img-responsive" src="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1600218_10151952573755975_1943489134_n.jpg?oh=3b63992f4758b9e5f513dd43ffba490e&oe=52DDB336">
                   <label class="radio-inline">
-                    <input name="radioGroup" id="radio1" value="option1" type="radio">
+                    <input  id="radio1" class="btn" name="option1" value="E" type="radio">
                   </label>
               </a>
           </div>
@@ -91,14 +93,25 @@
               <a class="thumbnail" href="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1543242_10151952573785975_1994472885_n.jpg?oh=844af51cfd318cda42732e9c3c71d12c&oe=52DDB3DE">
                   <img class="img-responsive" src="https://scontent-b.xx.fbcdn.net/hphotos-prn1/v/t34/1543242_10151952573785975_1994472885_n.jpg?oh=844af51cfd318cda42732e9c3c71d12c&oe=52DDB3DE">
                   <label class="radio-inline">
-                    <input name="radioGroup" id="radio1" value="option1" type="radio">
+                    <input  id="radio1" class='btn' name="option1" value="F" type="radio">
                   </label>
               </a>
           </div>
+	<input type="hidden" name="choice1" value={{request.form['choice1']}} />
         </div>
         <br>
+	<script type="text/jscript">
+                    $("body").find("#radio1").children().each(function () {
+                        $(this).bind('click', function () {
+                            $("input[name=choice1]").val(this.value);
+                            });
+                    });
+                </script>
         <button class="btn btn-lg btn-primary btn-block" type="submit" style=" width: 310px; display: inline-block;">Submit</button>
+	</form>
       </div>
+      
+
     </div>
 
     

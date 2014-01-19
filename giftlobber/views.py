@@ -97,6 +97,7 @@ def addContact():
             "zip": request.form["zip"],
             "country": "US",
             "addressId": address['id']
+            "gifts": {}
             })
         return redirect(url_for('manageContacts'))
     
@@ -106,13 +107,26 @@ def addContact():
 @app.route('/gifts/add', methods=['GET', 'POST'])
 def addGift():
     if request.method == 'POST':
+        print "testtt"
         client.gifts.insert({
-            "title": request.form['title'],
-            "message": request.form['message'],
-            "front": request.form['front']
+           "title": request.form['title'],
+           "message": request.form['message'],
+          #"front": request.form['option1'],
+            "user": session.get('user')
             })
-        return redirect(url_for('listGifts') )
+        print "test222"
+        return redirect(url_for('manageGifts') )
 
-    return render_template('addGift.html')
+    return render_template('editGift.html')
+
+@app.route('/gifts/add', methods=['GET' , 'POST'])
+def selectGift():
+    if request.method == 'POST':
+        gifts = client.contacts.find_one("first": "", "last": "")['gifts']
+        gifts.insert({"name": request.form["name"],
+            "date": request.form["date"]})      
+        redirect(url_for('manageContacts'))
+
+    return render_template('giftSelect.html')
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

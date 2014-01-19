@@ -41,9 +41,10 @@
 
         <b><h1 style="color: white;height: 30px;">Manage Your Gifts</h1></b>
         <br>
+	{% for contact in contacts%}
         <div class="panel panel-default">
           <!-- Default panel contents -->
-          {% for contact in contacts%}
+          
           <div class="panel-heading"> 
           Josh Romer  
           <div class="btn-group btn-grou-xs" style="
@@ -63,7 +64,7 @@
           </ul>
         </div>
 	{% endfor %}
-	<form action="{{url_for('addContact')}}" method=get role="form">
+	<form action="{{url_for('addGift')}}" method=get role="form">
         <button class="btn btn-lg btn-primary" type="submit">Add New Gift</button>
 	</form>
     
