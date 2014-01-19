@@ -125,8 +125,12 @@ def selectGift():
         gifts = client.contacts.find_one({'first': "", 'last': ""})['gifts']
         gifts.insert({"name": request.form["name"],
             "date": request.form["date"]})      
-        redirect(url_for('manageContacts'))
+        return redirect(url_for('manageContacts'))
 
-    return render_template('giftSelect.html')
+
+    first = request.args.get("first", "")
+    last = request.args.get("last", "")
+    gifts = client.gifts.find({'user': session.get('user')})
+    return render_template('giftSelect.html', first = first, last = last, gifts = gifts)
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

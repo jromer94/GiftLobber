@@ -42,26 +42,26 @@
         <b><h1 style="color: white;height: 30px;">Select/Create Your Gift</h1></b>
         <br>
         <!-- Large button group -->
+	<form method='post' action={{url_for('selectGift', first = first, last = last)}}>
         <div class="btn-group">
-          <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+          <button class="btn btn-default btn-lg dropdown-toggle" name="name" type="button" data-toggle="dropdown">
             Select Gift <span class="caret"></span>
           </button>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="">1</a></li>
-              <li><a href="">2</a></li>
-              <li><a href="">3</a></li>
+		{% for gift in gifts %}
+              <li><a href="">{{gift['title']}}</a></li>
+		{%endfor%}
             </ul>
         </div>
         <br>
-        <form>
+        
           <fieldset>
             <h3 style="color: rgba(255, 255, 255, 1);">Enter Date</h3>
-            <input type="text" placeholder="mm/dd">
+            <input type="text" name="date" placeholder="mmdd">
           </fieldset>
-        </form>
-        <br>
         <button class="btn btn-lg btn-primary btn-inline" type="submit">Submit</button>
 
+</form>
     
 
     <!-- Bootstrap core JavaScript

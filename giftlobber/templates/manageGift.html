@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <style>
+    #grad1
+    {
+      height:200px;
+      background: -webkit-linear-gradient(bottom, rgba(0,0,0,0.6), rgba(0,0,0,0)); /* For Safari */
+      background: -o-linear-gradient(bottom, rgba(0,0,0,0.6), rgba(0,0,0,0)); /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(bottom, rgba(0,0,0,0.6), rgba(0,0,0,0)); /* For Firefox 3.6 to 15 */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0)); /* Standard syntax (must be last) */
+    }
+  </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +41,7 @@
   <body>
     <div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
 
-    <div style="background-color: rgba(0, 0, 0, 0.4);padding-right: 0px;padding-left: 0px;width: 470px;margin-top: 200px;height: 288px;margin-left: auto;margin-right: auto;border-top-width: 100px; border-radius: 10px;margin-bottom: 0px;border-bottom-width: 20px;" class="container">
+    <div id="grad1" style="padding-right: 0px;padding-left: 0px;width: 470px;margin-top: 200px;height: 288px;margin-left: auto;margin-right: auto;border-top-width: 100px; border-radius: 10px;margin-bottom: 0px;border-bottom-width: 20px;" class="container">
     
 
       <div class="starter-template" style="
@@ -41,15 +51,17 @@
 
         <b><h1 style="color: white;height: 30px;">Manage Your Gifts</h1></b>
         <br>
-	{% for contact in contacts%}
+        
+  {% for contact in contacts%}
         <div class="panel panel-default">
           <!-- Default panel contents -->
-          {% for contact in contacts%}
-          <div class="panel-heading" style="text-align: left;">
-          Josh Romer  
+          <div class="panel-heading" style="text-align: left;"> 
+          {{contact['first'] + " " + contact['last']}}
           <div class="btn-group btn-grou-xs">
             <button type="button" class="btn btn-xs">
-              <span class="glyphicon glyphicon-plus"></span>
+              <a href="">
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
             </button>
             <button type="button" class="btn btn-xs">
               <span class="glyphicon glyphicon-remove"></span>
