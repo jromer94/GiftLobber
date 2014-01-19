@@ -62,8 +62,9 @@
           </ul>
         </div>
 	{% endfor %}
+	<form action="{{url_for('addContact')}}" method=get role="form">
         <button class="btn btn-lg btn-primary" type="submit">Add New Contact</button>
-
+	</form>
     
 
     <!-- Bootstrap core JavaScript

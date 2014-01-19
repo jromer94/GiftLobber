@@ -94,7 +94,7 @@ def addContact():
             "addressId": address['id']
             })
     
-    return render_template('addContact.html')
+    return render_template('manageContact.html')
 
 @app.route('/gifts/add', methods=['GET', 'POST'])
 def addGift():
